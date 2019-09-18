@@ -1,0 +1,169 @@
+        -A : BW Request ID consisting of RequestID [30 characters], Selection Date [8 characters], Selection Time [6 characters]
+        -v : Print version number
+        -D : Print debug messages
+        -DRowCount=<n>
+        -DASID=<s>
+        -DEngineID=<s>
+        -DGuiID=<s>
+        -Did<id>        : Specify the Designer session's unique id
+        -Dit<it>        : Specify the Designer session's execution iteration number
+        -Dt<timestamp>  : Specify the Designer session's execution timestamp
+        -Dscan          : Execute in Data Scan mode
+        -Dclean         : Cleanup any Data Scan temporary files
+        -DDataScanRows =<n>
+        -T<TraceNumber> : Trace numbers. The numbers are:
+          -1           : Trace all
+           1           : Trace row
+           2           : Trace plan
+           4           : Trace session
+           8           : Trace dataflow
+           16          : Trace transform
+           32          : Trace user transform
+           64          : Trace user function
+           128         : Trace ABAP Query
+           256         : Trace SQL For SQL transforms
+           512         : Trace SQL For SQL functions
+           1024        : Trace SQL For SQL readers
+           2048        : Trace SQL For SQL loaders
+           4096        : Trace Show Optimized DataFlows
+           8192        : Trace Repository SQL
+           524288      : Trace Nested View Processing
+           1048576     : Trace Assemblers
+           4194304     : Trace SAP RFC(BAPI) Function Call
+           33554432    : Trace adapter/client calls
+           67108864    : Trace broker communication layer
+           2147483648  : Trace Audit data
+        -l<FileName> : Name of the trace log file
+        -z<FileName> : Name of the error log file (only if any error occurs)
+        -c<FileName> : Name of the config file
+        -w<FileName> : Name of the monitor file
+        -t           : Monitor sample rate (number of seconds)
+        -test        : Execute real-time jobs in batch test mode
+        -nt          : Execute in single threaded mode
+        -np          : Execute in single process mode
+        -no_audit    : Execute with Audit turned off
+        -no_dq_capture    : Execute with Data quality statistics capture turned off
+        -Ksp<SystemConfiguration>    : Execute with system configuration
+        -Ck          : Execute in checkpoint mode
+        -Cr          : Execute in checkpoint recovery mode
+        -Cm<MachineName>       : Name of machine that administrates this job
+        -Ca<AccessServerName>  : Name of access server that administrates this job
+        -Ct<JobType>           : Type of this job (e.g. -CtBatch or -CtRTDF)
+        -Cj<JobServerHostName> : Name of job server's host that executes this job
+        -Cp<Port>              : Port of job server that executes this job
+        -CSV                   : Commandline Substitution Parameters (e.g. -CSV"$$DIR_PATH=C:/temp")
+        -U<User>         : Repository login user
+        -P<Password>     : Repository login password
+        -S<Server>       : Repository server name
+        -N<DatabaseType> : Repository database type
+        -Q<Database_or_SID>     : Repository database or SID (for Oracle only)
+        -g               : Repository using Windows Authentication (Microsoft SQL Server only)
+        -Kserver                 : Repository server name based connection (MySQL, HANA, ORACLE, and DB2)
+        -Kport<PortNumber>       : Repository port number for server name based connection. This option must be used with -Kserver option.
+        -Kversion<VersionNumber> : Repository database server version for server name based connection. This option must be used with -Kserver option. For example, -Kversion"MySQL 5.1"
+        -Kaddlconn<connection string> : Optional repository database addtional connection string for server name based connection. This option must be used with -Kserver option. For example, -Kaddlconn"EngineName=engine;"
+        -X               : Export the repository to file "repo_export.atl"
+        -XX[L]              : Export the repository to file "export.xml"
+        -XI<Filename.xml>             : Import information into the repository
+        -Xp@<ObjectType>@<FileName>                : Exports all repository objects of the specified type to the specified file in ATL format.
+        -Xp@<ObjectType>@<FileName>@<ObjectName>   : Export the specific repository object to the ATL file
+        -Xp@<ObjectType>@<FileName>@<ObjectName>@DE: Export the specific repository object and its dependents with datastore information to the ATL file.
+        -Xp@<ObjectType>@<FileName>@<ObjectName>@D : Exports the specified repository object and its dependents to the specified file in ATL format, excluding datastore information.
+        -XX[L]@<ObjectType>@<FileName>                : Export the specific repository objects to the XML file
+        -XX[L]@<ObjectType>@<FileName>@<ObjectName>   : Export the specific repository object to the XML file
+        -XX[L]@<ObjectType>@<FileName>@<ObjectName>@DE: Export the specific repository object and its dependents with datastore information to the XML file
+        -XX[L]@<ObjectType>@<FileName>@<ObjectName>@D : Export the specific repository object and its dependents without datastore information to the xml file
+                <ObjectType> can be one of the following
+                        P : Exports all Projects
+                        J : Exports all Jobs
+                        W : Exports all Work flows
+                        D : Exports all Dataflows
+                        T : Exports all Idocs
+                        F : Exports all user defined File formats
+                        X : Exports all XML and DTD Message formats
+                        S : Exports all Datastores
+                        C : Exports all Custom functions
+                        B : Exports all COBOL Copybooks
+                        E : Exports all Excel workbooks
+                        p : Exports all System Profiles
+                        v : Exports all Substitution Parameter Configurations
+                        K : Exports all SDK transform Configurations
+                [L] - Optionally, export a lean XML.
+        -XC              : Compact repository
+        -XV<ObjectType>@<ObjectName>              : Validate object of type <ObjectType> that exists in the repository
+                <ObjectType> can be one of the following when validating objects
+
+                        J : Job
+                        W : Work flow
+                        D : Dataflow
+                        T : ABAP Transform
+                        F : File format
+                        X : XML Schema or DTD Message format
+                        S : Datastore
+                        C : Custom function
+                        B : COBOL Copybook
+                        E : Excel workbook
+                        p : System Profile
+                        v : Substitution Parameter Configuration
+                        K: SDK Transform Configuration
+        -XR<ObjectType>@<ObjectName>              : Remove object of type <ObjectType> from the repository where ObjectName can be "datastore"."owner"."name" in case of objects (for example, table, stored procedure, domain, hierarchy, or IDOC) contained in a datastore.
+                <ObjectType> can be any of the object types for the XV option. In addition, they can be one of the following
+                        P : Project
+                        t : Table or Template Table
+                        f : Stored procedure or function
+                        h : Hierarchy
+                        d : Domain
+                        i : IDOC
+                        a : BW Master Transfer Structure
+                        b : BW Master Text Transfer Structure
+                        c : BW Master Transaction Transfer Structure
+                        e : BW Hiearchy Transfer
+                        x : ODP source
+        -Xi<ObjectType>@<ObjectName>            : Imports the specified object into the repository.
+                <ObjectType> is the same as -XR above
+        -XKserver                 : Export repository server name based connection (MySQL, HANA, ORACLE, and DB2).
+        -XKport<PortNumber>       : Export repository port number for server name based connection. This option must be used with -XKserver option.
+        -XKversion<VersionNumber> : Export repository database server version for server name based connection. This option must be used with -XKserver option. For example, -XKversion"MySQL 5.1"
+        -XKaddlconn<connection string> : Optional export repository database addtional connection string for server name based connection. This option must be used with -XKserver option. For example, -XKaddlconn"EngineName=engine;"
+        -x              : Export internal built-in function information
+        -xi<datastore>  : Print datastore's imported objects to file "<datastore>_imported_objects.txt"
+        -f<Filename.atl>[@NoUpgrade]  : Import information from ATL into the repository. By default this option upgrades the SDK Tranforms prior to importing them to repository, and does not import the read-only configurations. Specify @NoUpgrade to ignore the upgrade step or to import read-only configuration ATLs (e.g. sample_sdk_transform.atl).
+        -F<Datastore.Owner.Function> : Import function(s)
+        -H<filename>                 : Import a DTD or XML file to Repo
+        -I<Datastore.Owner.Table>    : Import a single table
+        -M<Datastore>                : Import tables and functions
+        -Y<Datastore.Owner.Treename> : Import a tree class
+        -el<Datastore.Owner.DBLink>  : Import a database link.
+        -et<Datastore>               : Print all imported database links for the current Datastore.
+        -G<guid>    : Execute a session specified by a GUID
+        -s<Session> : Execute a session
+        -p<Plan>    : Execute a plan
+        -passphrase<Passphrase>      : Import/export the passwords from/to atl using the passphrase.
+        -epassphrase<base64-encoded-passphrase>     : Same as -passphrase except that it accepts base64 encoded data to allow any special character in the passphrase. The passphrase must have been transcoded to UTF8 character set prior to applying base64 encoding.
+        -GV<global var assign list> : A list of global variable assignments, separated by semicolons t   the whole list in double-quotes.
+        -a<ABAPProgram> : Generate ABAP code
+        -V<name=value>  : Set the environment variable <name> with <value>
+        -L<list of value>    : List of Object Labels from UI (separated by , or; or space) to filter               Use double quotes around list if space usedas a separator.
+        -yr"<repository parameter file in quotes>"   : Read repository information from "file" (default path: %link_dir%/conf/)
+        -gr"<repository parameter file in quotes>"   : Write repository information to "file" (default path: %link_dir%/conf/)
+        -jd"<datastore delta file in quotes>"   : Modify datastore values using"file" (default path: %link_dir%/conf/)
+        -test_repo  : Test repository connection
+        -Jf<XML file>        : Filter the installation scenario defined in XML file
+        -Je<XML file>        : Execute the installation scenario defined in XMLfile
+        -Ja<parameters file> : Filter and execute the installation scenario defined in XML file
+        -b  : Populate AL_USAGE table
+        -ep : Populate AL_PARENT_CHILD table
+        -ec : Populate AL_COLMAP and AL_COLMAP_TEXT tables
+        Tree following options are for portable database targets (controlled release).
+                -WE : Delete properties of portable targets for datastore's database types other than default.
+                -WP : Populate properties of all portable targets for all datastore's database types.
+                -WD<datastore> : Datastore to which -WE and/or -WP is applied. If <datastore> was not specified, the option will apply to all portable targets.
+        -ClusterLevel<Distribution level> : Execute job with distribution level(e.g. -ClusterLevelJOB, -ClusterLevelDATAFLOW, -ClusterLevelTRANSFORM for sub data flow)
+
+
+
+
+
+
+
+

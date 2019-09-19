@@ -1,0 +1,105 @@
+#__AW_Repository_Version '14.2.9.0000';
+#__AW_Product_Version '14.2.9.1549';
+#__AW_ATL_Locale 'por_br.utf-8';
+ AlGUIComment ("ActaName_1" = 'RActa_user_func_category', "ActaName_2" = 'RParallelizable', "ActaName_3" = 'RisScriptValidationFunction', "ActaName_4" = 'RDescription', "ActaName_5" = 'RSavedAfterCheckOut', "ActaName_6" = 'RDate_modified', "ActaName_7" = 'RDate_created', "ActaValue_1" = 'User_Script_Function', "ActaValue_2" = 'yes', "ActaValue_3" = 'no', "ActaValue_4" = 'Verifica a validade do CPF. 1 é valido e 0 é inválido.', "ActaValue_5" = 'YES', "ActaValue_6" = 'Tue May 15 16:08:50 2018', "ActaValue_7" = 'Tue May 15 16:07:21 2018', "InputSchema_WidthProp" = '59', "Input_1st_Column_Name" = 'Type', "Input_2nd_Column_Name" = 'Description', "Input_Column_Name_3" = 'Content_Type', "Input_Column_Name_4" = 'Business_Name', "Input_Column_Width_3" = '100', "Input_Column_Width_4" = '100', "Input_Width_Description" = '130', "Input_Width_Type" = '85', "Output_1st_Column_Name" = 'Type', "Output_2nd_Column_Name" = 'Mapping', "Output_3rd_Column_Name" = 'Description', "Output_Column_Name_4" = 'Content_Type', "Output_Column_Name_5" = 'Business_Name', "Output_Column_Width_4" = '100', "Output_Column_Width_5" = '100', "Output_Width_Decsription" = '130', "Output_Width_Mapping" = '85', "Output_Width_Type" = '80', "UpperContainer_HeightProp" = '46', "ui_script_text" = '
+
+  # Funcao para validar CPF
+  # Retorna S para valido
+  # Retorna N para invalido
+
+  $CPF = REPLACE_SUBSTR( REPLACE_SUBSTR( REPLACE_SUBSTR( $CPF,\'.\',\'\'),\'-\',\'\'),\' \',\'\');
+
+  IF ( NVL($CPF,\'\') = \'\' )	
+  RETURN \'N\';
+
+  IF ( CAST($CPF, \'int\') = 0)
+  RETURN \'N\';
+
+  $CPF = LPAD( $CPF,11,\'0\');
+
+  $INDICE = 1;
+  $CPF_TEMP = SUBSTR($CPF,1,1);
+  $DIGITOS_IGUAIS = \'S\';
+  $RESULTADO = \'N\'; 
+
+  WHILE ($INDICE <= 11)
+  BEGIN
+    IF (SUBSTR($CPF,$INDICE,1) <> $CPF_TEMP )
+       $DIGITOS_IGUAIS = \'N\';
+       $INDICE = $INDICE + 1;
+
+  END
+
+  IF ($DIGITOS_IGUAIS = \'N\')
+  BEGIN
+     $SOMA = 0;
+     $INDICE = 1;
+    WHILE ($INDICE <= 9)
+    BEGIN
+       $SOMA = $SOMA + CAST( SUBSTR($CPF,$INDICE,1),\'int\') * (11 - $INDICE);
+       $INDICE = $INDICE + 1;
+    END
+
+    IF (MOD($SOMA,11) > 9)
+       $DIG1 = 0;
+    ELSE 
+	   $DIG1 = 11 - MOD($SOMA,11);
+
+     $SOMA = 0;
+     $INDICE = 1;
+    WHILE ($INDICE <= 10)
+    BEGIN
+       $SOMA = $SOMA + CAST( SUBSTR($CPF,$INDICE,1),\'int\') * (12 - $INDICE);
+       $INDICE = $INDICE + 1;
+    END
+
+    IF (MOD($SOMA,11) > 9)
+       $DIG2 = 0;
+    ELSE 
+	   $DIG2 = 11 - MOD($SOMA,11);
+
+    IF (($DIG1 = CAST( SUBSTR($CPF,10,1),\'int\')) AND ($DIG2 = CAST( SUBSTR($CPF,11,1),\'int\')))
+       $RESULTADO = \'S\';
+    ELSE
+       $RESULTADO = \'N\';
+  END
+
+  RETURN $RESULTADO;
+', "x" = '-1', "y" = '-1')
+CREATE FUNCTION FNC_ValidarCPF($CPF VARCHAR(255)  IN )
+RETURNS  VARCHAR(1) 
+DECLARE
+     $CPF_TEMP VARCHAR(1) ;
+     $DIG1 INT ;
+     $DIG2 INT ;
+     $DIGITOS_IGUAIS VARCHAR(1) ;
+     $INDICE INT ;
+     $RESULTADO VARCHAR(1) ;
+     $SOMA INT ;
+BEGIN
+$CPF = replace_substr(replace_substr(replace_substr($CPF, '.', ''), '-', ''), ' ', '');IF ((nvl($CPF, '') = '') )
+RETURN 'N';
+IF ((cast($CPF, 'int') = 0) )
+RETURN 'N';
+$CPF = lpad($CPF, 11, '0');$INDICE = 1;$CPF_TEMP = substr($CPF, 1, 1);$DIGITOS_IGUAIS = 'S';$RESULTADO = 'N';WHILE (($INDICE <= 11) )
+BEGIN
+IF ((substr($CPF, $INDICE, 1) != $CPF_TEMP) )
+$DIGITOS_IGUAIS = 'N';$INDICE = ($INDICE + 1);END
+IF (($DIGITOS_IGUAIS = 'N') )
+BEGIN
+$SOMA = 0;$INDICE = 1;WHILE (($INDICE <= 9) )
+BEGIN
+$SOMA = ($SOMA + (cast(substr($CPF, $INDICE, 1), 'int') * (11 - $INDICE)));$INDICE = ($INDICE + 1);END
+IF ((mod($SOMA, 11) > 9) )
+$DIG1 = 0;ELSE
+$DIG1 = (11 - mod($SOMA, 11));$SOMA = 0;$INDICE = 1;WHILE (($INDICE <= 10) )
+BEGIN
+$SOMA = ($SOMA + (cast(substr($CPF, $INDICE, 1), 'int') * (12 - $INDICE)));$INDICE = ($INDICE + 1);END
+IF ((mod($SOMA, 11) > 9) )
+$DIG2 = 0;ELSE
+$DIG2 = (11 - mod($SOMA, 11));IF ((($DIG1 = cast(substr($CPF, 10, 1), 'int')) AND
+   ($DIG2 = cast(substr($CPF, 11, 1), 'int'))) )
+$RESULTADO = 'S';ELSE
+$RESULTADO = 'N';END
+RETURN $RESULTADO;
+END

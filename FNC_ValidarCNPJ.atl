@@ -1,0 +1,106 @@
+#__AW_Repository_Version '14.2.9.0000';
+#__AW_Product_Version '14.2.9.1549';
+#__AW_ATL_Locale 'por_br.utf-8';
+ AlGUIComment ("ActaName_1" = 'RActa_user_func_category', "ActaName_2" = 'RParallelizable', "ActaName_3" = 'RisScriptValidationFunction', "ActaName_4" = 'RDescription', "ActaName_5" = 'RSavedAfterCheckOut', "ActaName_6" = 'RDate_modified', "ActaName_7" = 'RDate_created', "ActaValue_1" = 'User_Script_Function', "ActaValue_2" = 'yes', "ActaValue_3" = 'no', "ActaValue_4" = 'Verifica a validade do CNPJ. 1 é valido e 0 é inválido.', "ActaValue_5" = 'YES', "ActaValue_6" = 'Tue May 15 16:04:13 2018', "ActaValue_7" = 'Tue May 15 16:06:24 2018', "InputSchema_WidthProp" = '43', "Input_1st_Column_Name" = 'Type', "Input_2nd_Column_Name" = 'Description', "Input_Column_Name_3" = 'Content_Type', "Input_Column_Name_4" = 'Business_Name', "Input_Column_Width_3" = '100', "Input_Column_Width_4" = '100', "Input_Width_Description" = '130', "Input_Width_Type" = '85', "Output_1st_Column_Name" = 'Type', "Output_2nd_Column_Name" = 'Mapping', "Output_3rd_Column_Name" = 'Description', "Output_Column_Name_4" = 'Content_Type', "Output_Column_Name_5" = 'Business_Name', "Output_Column_Width_4" = '100', "Output_Column_Width_5" = '100', "Output_Width_Decsription" = '130', "Output_Width_Mapping" = '85', "Output_Width_Type" = '80', "UpperContainer_HeightProp" = '50', "ui_script_text" = '
+
+  # Funcao para validar CNPJ
+  # Retorna S para valido
+  # Retorna N para invalido
+
+  $CNPJ_NUM = REPLACE_SUBSTR( REPLACE_SUBSTR( REPLACE_SUBSTR( REPLACE_SUBSTR( $CNPJ_NUM,\'.\',\'\'),\'-\',\'\'),\'/\',\'\'),\' \',\'\');
+	
+  IF ( NVL($CNPJ_NUM,\'\') = \'\')
+  Return \'N\';
+
+  IF ( CAST($CNPJ_NUM, \'int\') = 0)
+  Return \'N\';
+
+  $CNPJ_NUM = LPAD( $CNPJ_NUM,14,\'0\');
+
+  $ftap1 = \'543298765432\';
+  $ftap2 = \'6543298765432\';
+  $SOMATORIO = 0;
+  $MODULO_CNPJ = 0;
+  $POS_CNPJ = 1;
+  $DIGITO_CNPJ_1 = SUBSTR( $CNPJ_NUM,13,1);
+  $DIGITO_CNPJ_2 = SUBSTR( $CNPJ_NUM,14,1);
+
+
+  WHILE ($POS_CNPJ < 13)
+  BEGIN
+    $MODULO_CNPJ = SUBSTR( $CNPJ_NUM,$POS_CNPJ,1) * SUBSTR( $ftap1,$POS_CNPJ,1);
+    $SOMATORIO = $SOMATORIO + $MODULO_CNPJ;
+    $POS_CNPJ = $POS_CNPJ + 1;
+  END	
+
+  $INT_CNPJ_1 = MOD($SOMATORIO,11);
+	
+  IF ($INT_CNPJ_1 < 2)
+    $INT_CNPJ_1 = 0;
+  ELSE
+   	$INT_CNPJ_1 = 11 - $INT_CNPJ_1;
+
+
+  $SOMATORIO = 0;
+  $MODULO_CNPJ = 0;
+  $POS_CNPJ = 1;
+  $CNPJ_NUM = SUBSTR( $CNPJ_NUM,1,12) || $INT_CNPJ_1;
+
+  WHILE ($POS_CNPJ < 14)
+  BEGIN
+	$MODULO_CNPJ = SUBSTR( $CNPJ_NUM,$POS_CNPJ,1) * SUBSTR( $ftap2,$POS_CNPJ,1);
+	$SOMATORIO = $SOMATORIO + $MODULO_CNPJ;
+	$POS_CNPJ = $POS_CNPJ + 1;
+  END	
+
+  $INT_CNPJ_2 = MOD($SOMATORIO,11);
+	
+  IF ($INT_CNPJ_2 < 2)
+    $INT_CNPJ_2 = 0;
+  ELSE
+   	$INT_CNPJ_2 = 11 - $INT_CNPJ_2;
+
+
+  IF (($INT_CNPJ_1 = $DIGITO_CNPJ_1) AND ($INT_CNPJ_2 = $DIGITO_CNPJ_2))
+    Return \'S\';
+  ELSE 
+    Return \'N\';
+
+
+
+
+', "x" = '-1', "y" = '-1')
+CREATE FUNCTION FNC_ValidarCNPJ($CNPJ_NUM VARCHAR(255)  IN )
+RETURNS  VARCHAR(1) 
+DECLARE
+     $ERRO_CNPJ VARCHAR(1) ;
+     $SOMATORIO INT ;
+     $POS_CNPJ INT ;
+     $DIGITO_CNPJ_1 INT ;
+     $INT_CNPJ_1 INT ;
+     $MODULO_CNPJ INT ;
+     $ftap1 VARCHAR(40) ;
+     $ftap2 VARCHAR(40) ;
+     $INT_CNPJ_2 INT ;
+     $DIGITO_CNPJ_2 INT ;
+BEGIN
+$CNPJ_NUM = replace_substr(replace_substr(replace_substr(replace_substr($CNPJ_NUM, '.', ''), '-', ''), '/', ''), ' ', '');IF ((nvl($CNPJ_NUM, '') = '') )
+RETURN 'N';
+IF ((cast($CNPJ_NUM, 'int') = 0) )
+RETURN 'N';
+$CNPJ_NUM = lpad($CNPJ_NUM, 14, '0');$ftap1 = '543298765432';$ftap2 = '6543298765432';$SOMATORIO = 0;$MODULO_CNPJ = 0;$POS_CNPJ = 1;$DIGITO_CNPJ_1 = substr($CNPJ_NUM, 13, 1);$DIGITO_CNPJ_2 = substr($CNPJ_NUM, 14, 1);WHILE (($POS_CNPJ < 13) )
+BEGIN
+$MODULO_CNPJ = (substr($CNPJ_NUM, $POS_CNPJ, 1) * substr($ftap1, $POS_CNPJ, 1));$SOMATORIO = ($SOMATORIO + $MODULO_CNPJ);$POS_CNPJ = ($POS_CNPJ + 1);END
+$INT_CNPJ_1 = mod($SOMATORIO, 11);IF (($INT_CNPJ_1 < 2) )
+$INT_CNPJ_1 = 0;ELSE
+$INT_CNPJ_1 = (11 - $INT_CNPJ_1);$SOMATORIO = 0;$MODULO_CNPJ = 0;$POS_CNPJ = 1;$CNPJ_NUM = (substr($CNPJ_NUM, 1, 12) || $INT_CNPJ_1);WHILE (($POS_CNPJ < 14) )
+BEGIN
+$MODULO_CNPJ = (substr($CNPJ_NUM, $POS_CNPJ, 1) * substr($ftap2, $POS_CNPJ, 1));$SOMATORIO = ($SOMATORIO + $MODULO_CNPJ);$POS_CNPJ = ($POS_CNPJ + 1);END
+$INT_CNPJ_2 = mod($SOMATORIO, 11);IF (($INT_CNPJ_2 < 2) )
+$INT_CNPJ_2 = 0;ELSE
+$INT_CNPJ_2 = (11 - $INT_CNPJ_2);IF ((($INT_CNPJ_1 = $DIGITO_CNPJ_1) AND
+   ($INT_CNPJ_2 = $DIGITO_CNPJ_2)) )
+RETURN 'S';
+ELSE
+RETURN 'N';
+END

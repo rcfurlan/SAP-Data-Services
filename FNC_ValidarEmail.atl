@@ -1,0 +1,177 @@
+#__AW_Repository_Version '14.2.9.0000';
+#__AW_Product_Version '14.2.9.1549';
+#__AW_ATL_Locale 'por_br.utf-8';
+ AlGUIComment ("ActaName_1" = 'RParallelizable', "ActaName_2" = 'RActa_user_func_category', "ActaName_3" = 'RisScriptValidationFunction', "ActaName_4" = 'RDescription', "ActaName_5" = 'RSavedAfterCheckOut', "ActaName_6" = 'RDate_modified', "ActaName_7" = 'RDate_created', "ActaValue_1" = 'yes', "ActaValue_2" = 'User_Script_Function', "ActaValue_3" = 'no', "ActaValue_4" = 'Verifica a validade do Email. 1 é valido e 0 é inválido.', "ActaValue_5" = 'YES', "ActaValue_6" = 'Thu May  3 18:12:56 2018', "ActaValue_7" = 'Tue May 15 16:09:02 2018', "InputSchema_WidthProp" = '43', "Input_1st_Column_Name" = 'Type', "Input_2nd_Column_Name" = 'Description', "Input_Column_Name_3" = 'Content_Type', "Input_Column_Name_4" = 'Business_Name', "Input_Column_Width_3" = '100', "Input_Column_Width_4" = '100', "Input_Width_Description" = '130', "Input_Width_Type" = '85', "Output_1st_Column_Name" = 'Type', "Output_2nd_Column_Name" = 'Mapping', "Output_3rd_Column_Name" = 'Description', "Output_Column_Name_4" = 'Content_Type', "Output_Column_Name_5" = 'Business_Name', "Output_Column_Width_4" = '100', "Output_Column_Width_5" = '100', "Output_Width_Decsription" = '130', "Output_Width_Mapping" = '85', "Output_Width_Type" = '80', "UpperContainer_HeightProp" = '50', "ui_script_text" = '  
+  
+    # Funcao para verificar o formato do email. A validade do dominio nao foi considerada.
+	# Retorna 1 para valido
+    # Retorna 0 para invalido
+
+    $EMAIL = nvl(rtrim_blanks( ltrim_blanks( $EMAIL)),\'\');
+
+  	IF ( $EMAIL = \'\' )	
+      RETURN \'N\';
+
+    ELSE IF ( index( $EMAIL,\'\\[\',1)  > 0  OR 
+	          index( $EMAIL,\']\' ,1)  > 0  OR
+			  index( $EMAIL,\'#\' ,1)  > 0  OR
+	          index( $EMAIL,\'$\' ,1)  > 0  OR
+	          index( $EMAIL,\'%\' ,1)  > 0  OR
+	          index( $EMAIL,\'&\' ,1)  > 0  OR
+	          index( $EMAIL,\'?\' ,1)  > 0  OR
+	          index( $EMAIL,\'§\',1)  > 0  OR
+              index( $EMAIL,\'(\' ,1)  > 0  OR
+	          index( $EMAIL,\')\' ,1)  > 0  OR
+			  index( $EMAIL,\'+\' ,1)  > 0  OR
+	          index( $EMAIL,\'|\' ,1)  > 0  OR
+              index( $EMAIL,\'\\\\\',1)  > 0  OR
+	          index( $EMAIL,\'/\' ,1)  > 0  OR
+	          index( $EMAIL,\'<\' ,1)  > 0  OR
+	          index( $EMAIL,\'>\' ,1)  > 0  OR
+	          index( $EMAIL,\'\\{\',1)  > 0  OR
+	          index( $EMAIL,\'}\' ,1)  > 0  OR
+	          index( $EMAIL,\'\\\'\',1)  > 0  OR
+	          index( $EMAIL,\'"\' ,1)  > 0  OR
+	          index( $EMAIL,\':\' ,1)  > 0  OR
+	          index( $EMAIL,\';\' ,1)  > 0  OR
+	          index( $EMAIL,\',\' ,1)  > 0  OR
+	          index( $EMAIL,\'*\' ,1)  > 0  OR
+			  index( $EMAIL,\'¨\',1)  > 0  OR
+			  index( $EMAIL,\'~\' ,1)  > 0  OR
+			  index( $EMAIL,\'^\' ,1)  > 0  OR
+			  index( $EMAIL,\'`\' ,1)  > 0  OR
+			  index( $EMAIL,\'!\' ,1)  > 0  OR
+			  index( $EMAIL,\'=\' ,1)  > 0  OR
+
+			  index( $EMAIL,\' \' ,1)  > 0  OR
+			  index( $EMAIL,\'ç\' ,1)  > 0  OR
+			  index( $EMAIL,\'Ç\' ,1)  > 0  OR
+			  index( $EMAIL,\'á\' ,1)  > 0  OR
+			  index( $EMAIL,\'é\' ,1)  > 0  OR
+			  index( $EMAIL,\'í\' ,1)  > 0  OR
+			  index( $EMAIL,\'ó\' ,1)  > 0  OR
+			  index( $EMAIL,\'ú\' ,1)  > 0  OR
+			  index( $EMAIL,\'Á\' ,1)  > 0  OR
+			  index( $EMAIL,\'É\' ,1)  > 0  OR
+			  index( $EMAIL,\'Í\' ,1)  > 0  OR
+			  index( $EMAIL,\'Ó\' ,1)  > 0  OR
+			  index( $EMAIL,\'Ú\' ,1)  > 0  OR
+			  index( $EMAIL,\'ã\' ,1)  > 0  OR
+			  index( $EMAIL,\'õ\' ,1)  > 0  OR
+			  index( $EMAIL,\'Ã\' ,1)  > 0  OR
+			  index( $EMAIL,\'Õ\' ,1)  > 0  OR
+			  index( $EMAIL,\'ü\' ,1)  > 0  OR
+			  index( $EMAIL,\'Ü\' ,1)  > 0  OR
+			  index( $EMAIL,\'à\' ,1)  > 0  OR
+			  index( $EMAIL,\'À\' ,1)  > 0  OR
+			  index( $EMAIL,\'â\' ,1)  > 0  OR
+			  index( $EMAIL,\'ê\' ,1)  > 0  OR
+			  index( $EMAIL,\'î\' ,1)  > 0  OR
+			  index( $EMAIL,\'ô\' ,1)  > 0  OR
+			  index( $EMAIL,\'û\' ,1)  > 0  OR
+			  index( $EMAIL,\'Â\' ,1)  > 0  OR
+			  index( $EMAIL,\'Ê\' ,1)  > 0  OR
+			  index( $EMAIL,\'Î\' ,1)  > 0  OR
+			  index( $EMAIL,\'Ô\' ,1)  > 0  OR
+			  index( $EMAIL,\'Û\' ,1)  > 0  OR
+
+	          index( $EMAIL,\'ª\' ,1)  > 0  OR
+	          index( $EMAIL,\'º\' ,1)  > 0  OR
+	          index( $EMAIL,\'°\',1)  > 0  OR
+	          index( $EMAIL,\'.@\',1)  > 0  OR
+	          index( $EMAIL,\'@.\',1)  > 0  OR
+	          index( $EMAIL,\'@\', 1)  IS NULL  OR                        #Sem arroba
+	          index( $EMAIL,\'@\', 1)  = 1  OR                            #Arroba na primeira posicao
+	          index( $EMAIL,\'@\', length($EMAIL))  = length($EMAIL)  OR  #Arroba na ultima posicao
+			  index( $EMAIL,\'@\',index( $EMAIL,\'@\',1) + 1)  > 0      OR  #Arroba aparece mais de uma vez
+			  index( $EMAIL,\'.\', length($EMAIL))  = length($EMAIL)  OR  #Ponto na ultima posicao
+			  index( $EMAIL,\'..\',1)  > 0  OR                            #Ponto aparece mais de uma vez
+			  lower( $EMAIL) like \'%nao%informado\'  OR 
+			  lower( $EMAIL) like \'%não%informado\'   )   
+	  RETURN \'N\';
+    ELSE 
+	  RETURN \'S\';', "x" = '-1', "y" = '-1')
+CREATE FUNCTION FNC_ValidarEmail($EMAIL VARCHAR(500)  IN )
+RETURNS  VARCHAR(1) 
+BEGIN
+$EMAIL = nvl(rtrim_blanks(ltrim_blanks($EMAIL)), '');IF (($EMAIL = '') )
+RETURN 'N';
+ELSE
+IF (((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((index($EMAIL, '\\[', 1) > 0) OR
+   (index($EMAIL, ']', 1) > 0)) OR
+   (index($EMAIL, '#', 1) > 0)) OR
+   (index($EMAIL, '$', 1) > 0)) OR
+   (index($EMAIL, '%', 1) > 0)) OR
+   (index($EMAIL, '&', 1) > 0)) OR
+   (index($EMAIL, '?', 1) > 0)) OR
+   (index($EMAIL, '§', 1) > 0)) OR
+   (index($EMAIL, '(', 1) > 0)) OR
+   (index($EMAIL, ')', 1) > 0)) OR
+   (index($EMAIL, '+', 1) > 0)) OR
+   (index($EMAIL, '|', 1) > 0)) OR
+   (index($EMAIL, '\\', 1) > 0)) OR
+   (index($EMAIL, '/', 1) > 0)) OR
+   (index($EMAIL, '<', 1) > 0)) OR
+   (index($EMAIL, '>', 1) > 0)) OR
+   (index($EMAIL, '\\{', 1) > 0)) OR
+   (index($EMAIL, '}', 1) > 0)) OR
+   (index($EMAIL, '\'', 1) > 0)) OR
+   (index($EMAIL, '"', 1) > 0)) OR
+   (index($EMAIL, ':', 1) > 0)) OR
+   (index($EMAIL, ';', 1) > 0)) OR
+   (index($EMAIL, ',', 1) > 0)) OR
+   (index($EMAIL, '*', 1) > 0)) OR
+   (index($EMAIL, '¨', 1) > 0)) OR
+   (index($EMAIL, '~', 1) > 0)) OR
+   (index($EMAIL, '^', 1) > 0)) OR
+   (index($EMAIL, '`', 1) > 0)) OR
+   (index($EMAIL, '!', 1) > 0)) OR
+   (index($EMAIL, '=', 1) > 0)) OR
+   (index($EMAIL, ' ', 1) > 0)) OR
+   (index($EMAIL, 'ç', 1) > 0)) OR
+   (index($EMAIL, 'Ç', 1) > 0)) OR
+   (index($EMAIL, 'á', 1) > 0)) OR
+   (index($EMAIL, 'é', 1) > 0)) OR
+   (index($EMAIL, 'í', 1) > 0)) OR
+   (index($EMAIL, 'ó', 1) > 0)) OR
+   (index($EMAIL, 'ú', 1) > 0)) OR
+   (index($EMAIL, 'Á', 1) > 0)) OR
+   (index($EMAIL, 'É', 1) > 0)) OR
+   (index($EMAIL, 'Í', 1) > 0)) OR
+   (index($EMAIL, 'Ó', 1) > 0)) OR
+   (index($EMAIL, 'Ú', 1) > 0)) OR
+   (index($EMAIL, 'ã', 1) > 0)) OR
+   (index($EMAIL, 'õ', 1) > 0)) OR
+   (index($EMAIL, 'Ã', 1) > 0)) OR
+   (index($EMAIL, 'Õ', 1) > 0)) OR
+   (index($EMAIL, 'ü', 1) > 0)) OR
+   (index($EMAIL, 'Ü', 1) > 0)) OR
+   (index($EMAIL, 'à', 1) > 0)) OR
+   (index($EMAIL, 'À', 1) > 0)) OR
+   (index($EMAIL, 'â', 1) > 0)) OR
+   (index($EMAIL, 'ê', 1) > 0)) OR
+   (index($EMAIL, 'î', 1) > 0)) OR
+   (index($EMAIL, 'ô', 1) > 0)) OR
+   (index($EMAIL, 'û', 1) > 0)) OR
+   (index($EMAIL, 'Â', 1) > 0)) OR
+   (index($EMAIL, 'Ê', 1) > 0)) OR
+   (index($EMAIL, 'Î', 1) > 0)) OR
+   (index($EMAIL, 'Ô', 1) > 0)) OR
+   (index($EMAIL, 'Û', 1) > 0)) OR
+   (index($EMAIL, 'ª', 1) > 0)) OR
+   (index($EMAIL, 'º', 1) > 0)) OR
+   (index($EMAIL, '°', 1) > 0)) OR
+   (index($EMAIL, '.@', 1) > 0)) OR
+   (index($EMAIL, '@.', 1) > 0)) OR
+   (index($EMAIL, '@', 1) IS  NULL )) OR
+   (index($EMAIL, '@', 1) = 1)) OR
+   (index($EMAIL, '@', length($EMAIL)) = length($EMAIL))) OR
+   (index($EMAIL, '@', (index($EMAIL, '@', 1) + 1)) > 0)) OR
+   (index($EMAIL, '.', length($EMAIL)) = length($EMAIL))) OR
+   (index($EMAIL, '..', 1) > 0)) OR
+   (lower($EMAIL) like '%nao%informado')) OR
+   (lower($EMAIL) like '%não%informado')) )
+RETURN 'N';
+ELSE
+RETURN 'S';
+END
